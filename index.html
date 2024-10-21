@@ -516,7 +516,11 @@
 
 function LanguageRequest() {
     try {
-        // Force the language to English ('EN') instead of using the SDK's detected language
+        // Force the language to English ('EN') regardless of the detected language
+        ysdk.settings = ysdk.settings || {};
+        ysdk.settings.lang = 'en'; // Set the SDK's internal language setting to 'EN'
+        
+        // Now explicitly set the language to 'EN' when sending the message to the game
         myGameInstance.SendMessage('YandexGame', 'SetLanguage', 'EN');
     } catch (e) {
         console.error('CRASH Language Request: ', e.message);
@@ -527,7 +531,7 @@ function RequestingEnvironmentData() {
     try {
         let jsonEnvir = {
             // Force the language to English ('EN')
-            "language": 'EN',
+            "language": 'EN', // Hardcoded to English
             "domain": ysdk.environment.i18n.tld,
             "deviceType": ysdk.deviceInfo.type,
             "isMobile": ysdk.deviceInfo.isMobile(),
@@ -535,7 +539,7 @@ function RequestingEnvironmentData() {
             "isTablet": ysdk.deviceInfo.isTablet(),
             "isTV": ysdk.deviceInfo.isTV(),
             "appID": ysdk.environment.app.id,
-            "browserLang": ysdk.environment.browser.lang,
+            "browserLang": 'en', // Hardcoded to English
             "payload": ysdk.environment.payload,
             "promptCanShow": promptCanShow,
             "reviewCanShow": reviewCanShow
@@ -545,6 +549,14 @@ function RequestingEnvironmentData() {
         console.error('CRASH Requesting Environment Data: ', e.message);
     }
 }
+
+// Ensure that when Yandex SDK initializes, it uses English
+ysdk.ready().then(() => {
+    ysdk.settings = ysdk.settings || {};
+    ysdk.settings.lang = 'en'; // Override the language setting to English ('en')
+    LanguageRequest(); // Call the function to set language
+});
+
 
 
     function Review() {
