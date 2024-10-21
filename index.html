@@ -101,7 +101,7 @@
         .then(ysdk => {
             console.log('Init SDK');
             window.ysdk = ysdk;
-            initSDK = true;
+            initSDK = false;
             InitPayments();
 
             try {
@@ -549,15 +549,6 @@ function RequestingEnvironmentData() {
         console.error('CRASH Requesting Environment Data: ', e.message);
     }
 }
-
-// Ensure that when Yandex SDK initializes, it uses English
-ysdk.ready().then(() => {
-    ysdk.settings = ysdk.settings || {};
-    ysdk.settings.lang = 'en'; // Override the language setting to English ('en')
-    LanguageRequest(); // Call the function to set language
-});
-
-
 
     function Review() {
         try {
